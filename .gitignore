@@ -1,0 +1,12 @@
+/.idea/.idea.Larisa/.idea/contentModel.xml
+/.idea/.idea.Larisa/.idea/modules.xml
+/.idea/.idea.Larisa/.idea/workspace.xml
+/.idea/.idea.Larisa/riderModule.iml
+/.vs/Larisa/v15/.suo
+/.vs/Larisa/v15/Server/sqlite3/db.lock
+/.vs/Larisa/v15/Server/sqlite3/storage.ide
+/.vs/Larisa/v15/sqlite3/db.lock
+/.vs/Larisa/v15/sqlite3/storage.ide
+/packages/**
+/Larisa/bin/*
+/Larisa/obj/*

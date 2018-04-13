@@ -3,14 +3,20 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Google.Cloud.Speech.V1;
+using GoogleSpeechApi;
 
 namespace Larisa
 {
     static class Program
     {
-        private static void Main(string[] args)
+        private static async Task Main(string[] args)
         {
-            var res = StreamingMicRecognizeAsync(100).Result;
+            ISpeechRecongizer r = new GoogleSpechRecognizerWrapper();
+            var task = r.StartRecognition();
+            Console.WriteLine("started");
+            r.OnSpeechRecognized += (o, a) => { Console.WriteLine(a.Text); };
+            await task;
+//            var res = StreamingMicRecognizeAsync(100).Result;
         }
 
         static async Task<object> StreamingMicRecognizeAsync(int seconds)

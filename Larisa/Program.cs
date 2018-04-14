@@ -11,12 +11,14 @@ namespace Larisa
     {
         private static async Task Main(string[] args)
         {
+            var logger = NLog.LogManager.GetCurrentClassLogger();
+            logger.Debug("TEST");
             ISpeechRecongizer r = new GoogleSpechRecognizerWrapper();
             var task = r.StartRecognition();
             Console.WriteLine("started");
             r.OnSpeechRecognized += (o, a) => { Console.WriteLine(a.Text); };
             await task;
-//            var res = StreamingMicRecognizeAsync(100).Result;
+            //            var res = StreamingMicRecognizeAsync(100).Result;
         }
 
         static async Task<object> StreamingMicRecognizeAsync(int seconds)
@@ -45,7 +47,7 @@ namespace Larisa
                             SampleRateHertz = 16000,
                             LanguageCode = "ru",
                             MaxAlternatives = 0,
-                            SpeechContexts = {speechContext}
+                            SpeechContexts = { speechContext }
                         },
                         InterimResults = true,
                     }

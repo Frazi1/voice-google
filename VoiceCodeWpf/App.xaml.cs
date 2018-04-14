@@ -1,4 +1,6 @@
-﻿namespace VoiceCodeWpf
+﻿using System.Windows;
+
+namespace VoiceCodeWpf
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -18,6 +18,8 @@ namespace GoogleSpeechApi
             WaveFormat = new NAudio.Wave.WaveFormat(16000, 1)
         };
 
+        private SpeechClient _speechClient;
+
         private static StreamingRecognizeRequest GetStreamingRecognizeRequest(SpeechContext speechContext)
         {
             var streamingRecognizeRequest = new StreamingRecognizeRequest
@@ -46,8 +48,8 @@ namespace GoogleSpeechApi
                 throw new ApplicationException("No microphone!");
             }
 
-            var speech = SpeechClient.Create();
-            _streamingRecognizeStream = speech.StreamingRecognize();
+            _speechClient = SpeechClient.Create();
+            _streamingRecognizeStream = _speechClient.StreamingRecognize();
             var speechContext = new SpeechContext();
             speechContext.Phrases.AddRange(new[]
                 {"int", "for", "true", "false", "public", "private", "bool", "static", "void"});
@@ -74,32 +76,35 @@ namespace GoogleSpeechApi
             });
             // Read from the microphone and stream to API.
 
-            _waveInEvent.DataAvailable += (sender, args) =>
-            {
-                lock (_writeLock)
-                {
-                    if (!_writeMore) return;
-                    _streamingRecognizeStream.WriteAsync(
-                        new StreamingRecognizeRequest
-                        {
-                            AudioContent = Google.Protobuf.ByteString
-                                .CopyFrom(args.Buffer, 0, args.BytesRecorded),
-                        }).Wait();
-                }
-            };
+            _waveInEvent.DataAvailable += NewMethod;
             _waveInEvent.StartRecording();
             Console.WriteLine("Speak now.");
-            await Task.Delay(TimeSpan.FromSeconds(seconds));
+            //await Task.Delay(TimeSpan.FromSeconds(seconds));
             // Stop recording and shut down.
-            StopRecognition();
+            //StopRecognition();
+            await printResponses;
             //await printResponses;
+        }
+
+        private void NewMethod(object sender, WaveInEventArgs args)
+        {
+            lock (_writeLock)
+            {
+                if (!_writeMore) return;
+                _streamingRecognizeStream.WriteAsync(
+                    new StreamingRecognizeRequest
+                    {
+                        AudioContent = Google.Protobuf.ByteString
+                            .CopyFrom(args.Buffer, 0, args.BytesRecorded),
+                    }).Wait();
+            }
         }
 
         public event SpechRecognizerHandler OnSpeechRecognized;
 
-        public Task StartRecognition()
+        public void StartRecognitionAsync()
         {
-            return StreamingMicRecognizeAsync(100);
+            StreamingMicRecognizeAsync(100).ConfigureAwait(false);
 //            StreamingMicRecognizeAsync(100);
         }
 
@@ -108,6 +113,11 @@ namespace GoogleSpeechApi
             _waveInEvent.StopRecording();
             lock (_writeLock) _writeMore = false;
             _streamingRecognizeStream.WriteCompleteAsync().Wait();
+        }
+
+        public async Task StartRecognition()
+        {
+            await StreamingMicRecognizeAsync(100);
         }
     }
 }

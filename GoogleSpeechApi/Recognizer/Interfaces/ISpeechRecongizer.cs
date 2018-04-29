@@ -21,5 +21,6 @@ namespace GoogleSpeechApi.Recognizer.Interfaces
         event SpechRecognizerHandler OnSpeechRecognized;
         Task StartRecognition();
         void StopRecognition();
+        void StartRecognitionAsync();
     }
 }

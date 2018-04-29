@@ -18,11 +18,6 @@ namespace GoogleSpeechApi.Grammars
             TextSequences = textSequences;
         }
 
-        public GrammarRule(string textSequence) : this()
-        {
-            TextSequences.Add(new TextSequence(textSequence.Split(' ').ToList()));
-        }
-
         public bool Match(string input, out string mathedResult)
         {
             bool result = true;

@@ -2,8 +2,10 @@
 using System.Threading.Tasks;
 using GoogleSpeechApi;
 using GoogleSpeechApi.Grammars;
+using GoogleSpeechApi.Grammars.Config;
 using GoogleSpeechApi.Recognizer;
 using GoogleSpeechApi.Recognizer.Interfaces;
+using ICSharpCode.AvalonEdit;
 using VoiceCodeWpf.Commands;
 
 namespace VoiceCodeWpf
@@ -13,7 +15,7 @@ namespace VoiceCodeWpf
     /// </summary>
     public partial class MainWindow
     {
-        private ISpeechRecongizer a;
+        private readonly ISpeechRecongizer _recongizer = new GoogleSpechRecognizerWrapper();
         private Task t;
         private readonly Grammar _grammar;
 
@@ -21,40 +23,33 @@ namespace VoiceCodeWpf
         {
             InitializeComponent();
             _grammar = new Grammar();
+            var builder = new GrammarRuleBuilder();
             _grammar.Bindings.Add(new GrammarCommandBinding
             {
-                GrammarRule = new GrammarRule("Валера ест огурцы"),
-                Command = new PrintCommand(AppendToEditor)
+                GrammarRule = builder.FromString("Валера ест огурцы"),
+                Command = new PrintCommand(AppendCode)
             });
         }
 
-
-        private void Append(object o, SpeechRecognizerEventArgs speechRecognizerEventArgs)
+        private void AppendCode(string text)
         {
-            try
-            {
-                AppendToEditor(speechRecognizerEventArgs.Text);
-            }
-            catch (Exception e)
-            {
-                VoiceCodeWpf.Logging.Logger.Write(e);
-            }
+            AppendToEditor(CodeEditor, text);
         }
 
-        private void AppendToEditor(string text)
+        private void AppendToEditor(TextEditor editor, string text)
         {
-            Dispatcher.Invoke(() => { TextEditor.AppendText(text); });
+            Dispatcher.Invoke(() => { editor.AppendText(text); });
         }
 
-        private async void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var r = new GoogleSpechRecognizerWrapper();
-            r.OnSpeechRecognized += (o, args) =>
+            _recongizer.OnSpeechRecognized += (o, args) =>
             {
+                AppendToEditor(TextEditorHistory, args.Text + Environment.NewLine);
                 _grammar.Execute(args.Text);
             };
             //r.OnSpeechRecognized += (o, args) => { AppendToEditor(args.Text); };
-            r.StartRecognitionAsync();
+            _recongizer.StartRecognitionAsync();
         }
     }
 }

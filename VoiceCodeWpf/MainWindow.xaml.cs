@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using GoogleSpeechApi;
-using NLog;
 
 namespace VoiceCodeWpf
 {

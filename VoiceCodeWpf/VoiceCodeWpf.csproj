@@ -34,11 +34,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.AvalonEdit, Version=5.0.3.0, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
-      <HintPath>..\packages\AvalonEdit.5.0.4\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
+    <Reference Include="Google.Api.Gax, Version=2.1.0.0, Culture=neutral, PublicKeyToken=3ec5ea7f18953e47, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Google.Api.Gax.2.1.0\lib\net45\Google.Api.Gax.dll</HintPath>
     </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c">
-      <HintPath>..\packages\NLog.4.5.2\lib\net45\NLog.dll</HintPath>
+    <Reference Include="Google.Api.Gax.Grpc, Version=2.1.0.0, Culture=neutral, PublicKeyToken=3ec5ea7f18953e47, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Google.Api.Gax.Grpc.2.1.0\lib\net45\Google.Api.Gax.Grpc.dll</HintPath>
+    </Reference>
+    <Reference Include="Grpc.Auth">
+      <HintPath>..\packages\Grpc.Auth.1.6.1\lib\net45\Grpc.Auth.dll</HintPath>
+    </Reference>
+    <Reference Include="Grpc.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d754f35622e28bad, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Grpc.Core.1.6.1\lib\net45\Grpc.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.AvalonEdit, Version=5.0.3.0, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
+      <HintPath>..\packages\AvalonEdit.5.0.3\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -86,8 +98,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="NLog.config" />
-    <None Include="NLog.xsd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -99,4 +109,9 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy $(SolutionDir)packages\Grpc.Core.1.6.1\runtimes\win\native\*dll . /Y
+xcopy $(SolutionDir)GoogleSpeechApi\bin\Debug . /Y
+</PostBuildEvent>
+  </PropertyGroup>
 </Project>

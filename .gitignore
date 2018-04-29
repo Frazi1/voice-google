@@ -79,3 +79,5 @@
 /VoiceCodeWpf/obj/Debug/VoiceCodeWpf.pdb
 /VoiceCodeWpf/obj/Debug/VoiceCodeWpf_MarkupCompile.cache
 /VoiceCodeWpf/obj/Debug/VoiceCodeWpf_MarkupCompile.lref
+bin
+obj

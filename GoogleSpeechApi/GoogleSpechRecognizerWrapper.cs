@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Google.Cloud.Speech.V1;
@@ -41,7 +42,7 @@ namespace GoogleSpeechApi
             return streamingRecognizeRequest;
         }
 
-        private async Task StreamingMicRecognizeAsync(int seconds)
+        private async Task<int> StreamingMicRecognizeAsync(int seconds)
         {
             if (WaveIn.DeviceCount < 1)
             {
@@ -84,6 +85,7 @@ namespace GoogleSpeechApi
             //StopRecognition();
             await printResponses;
             //await printResponses;
+            return 0;
         }
 
         private void NewMethod(object sender, WaveInEventArgs args)
@@ -105,7 +107,11 @@ namespace GoogleSpeechApi
         public void StartRecognitionAsync()
         {
             StreamingMicRecognizeAsync(100).ConfigureAwait(false);
-//            StreamingMicRecognizeAsync(100);
+            //            StreamingMicRecognizeAsync(100);
+            OnSpeechRecognized += (o, a) =>
+            {
+                Debug.WriteLine(a.Text);
+            };
         }
 
         public void StopRecognition()
@@ -118,6 +124,7 @@ namespace GoogleSpeechApi
         public async Task StartRecognition()
         {
             await StreamingMicRecognizeAsync(100);
+
         }
     }
 }

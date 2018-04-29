@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace GoogleSpeechApi
+namespace GoogleSpeechApi.Recognizer.Interfaces
 {
     public delegate void SpechRecognizerHandler(object s, SpeechRecognizerEventArgs e);
 

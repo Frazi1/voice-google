@@ -3,9 +3,10 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Google.Cloud.Speech.V1;
+using GoogleSpeechApi.Recognizer.Interfaces;
 using NAudio.Wave;
 
-namespace GoogleSpeechApi
+namespace GoogleSpeechApi.Recognizer
 {
     public class GoogleSpechRecognizerWrapper : ISpeechRecongizer
     {

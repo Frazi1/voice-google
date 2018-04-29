@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using GoogleSpeechApi;
+using GoogleSpeechApi.Recognizer;
+using GoogleSpeechApi.Recognizer.Interfaces;
 
 namespace Larisa
 {

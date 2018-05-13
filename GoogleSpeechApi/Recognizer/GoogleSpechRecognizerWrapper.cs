@@ -45,48 +45,57 @@ namespace GoogleSpeechApi.Recognizer
 
         private async Task<int> StreamingMicRecognizeAsync(int seconds)
         {
-            if (WaveIn.DeviceCount < 1)
+            try
             {
-                throw new ApplicationException("No microphone!");
-            }
-
-            _speechClient = SpeechClient.Create();
-            _streamingRecognizeStream = _speechClient.StreamingRecognize();
-            var speechContext = new SpeechContext();
-            speechContext.Phrases.AddRange(new[]
-                {"int", "for", "true", "false", "public", "private", "bool", "static", "void"});
-            // Write the initial request with the config.
-            StreamingRecognizeRequest recognizeRequest = GetStreamingRecognizeRequest(speechContext);
-            await _streamingRecognizeStream.WriteAsync(recognizeRequest);
-            // Print responses as they arrive.
-
-            Task printResponses = Task.Run(async () =>
-            {
-                while (await _streamingRecognizeStream.ResponseStream.MoveNext(default(CancellationToken)))
+                if (WaveIn.DeviceCount < 1)
                 {
-                    foreach (StreamingRecognitionResult streamingRecognitionResult in _streamingRecognizeStream
-                        .ResponseStream
-                        .Current.Results)
+                    throw new ApplicationException("No microphone!");
+                }
+
+                _speechClient = SpeechClient.Create();
+                _streamingRecognizeStream = _speechClient.StreamingRecognize();
+                var speechContext = new SpeechContext();
+                speechContext.Phrases.AddRange(new[]
+                    {"int", "for", "true", "false", "public", "private", "bool", "static", "void"});
+                // Write the initial request with the config.
+                StreamingRecognizeRequest recognizeRequest = GetStreamingRecognizeRequest(speechContext);
+                await _streamingRecognizeStream.WriteAsync(recognizeRequest);
+                // Print responses as they arrive.
+
+                Task printResponses = Task.Run(async () =>
+                {
+                    while (await _streamingRecognizeStream.ResponseStream.MoveNext(default(CancellationToken)))
                     {
-                        if (streamingRecognitionResult.IsFinal)
+                        foreach (StreamingRecognitionResult streamingRecognitionResult in _streamingRecognizeStream
+                            .ResponseStream
+                            .Current.Results)
                         {
-                            var transcript = streamingRecognitionResult.Alternatives[0].Transcript;
-                            OnSpeechRecognized?.Invoke(this, new SpeechRecognizerEventArgs(transcript));
+                            if (streamingRecognitionResult.IsFinal)
+                            {
+                                var transcript = streamingRecognitionResult.Alternatives[0].Transcript;
+                                OnSpeechRecognized?.Invoke(this, new SpeechRecognizerEventArgs(transcript));
+                            }
                         }
                     }
-                }
-            });
-            // Read from the microphone and stream to API.
+                });
+                // Read from the microphone and stream to API.
 
-            _waveInEvent.DataAvailable += NewMethod;
-            _waveInEvent.StartRecording();
-            Console.WriteLine("Speak now.");
-            //await Task.Delay(TimeSpan.FromSeconds(seconds));
-            // Stop recording and shut down.
-            //StopRecognition();
-            await printResponses;
-            //await printResponses;
-            return 0;
+                _waveInEvent.DataAvailable += NewMethod;
+                _waveInEvent.StartRecording();
+                Console.WriteLine("Speak now.");
+                //await Task.Delay(TimeSpan.FromSeconds(seconds));
+                // Stop recording and shut down.
+                //StopRecognition();
+                await printResponses;
+                //await printResponses;
+                return 0;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+
+            return -1;
         }
 
         private void NewMethod(object sender, WaveInEventArgs args)
@@ -94,16 +103,26 @@ namespace GoogleSpeechApi.Recognizer
             lock (_writeLock)
             {
                 if (!_writeMore) return;
-                _streamingRecognizeStream.WriteAsync(
-                    new StreamingRecognizeRequest
-                    {
-                        AudioContent = Google.Protobuf.ByteString
-                            .CopyFrom(args.Buffer, 0, args.BytesRecorded),
-                    }).Wait();
+                try
+                {
+                    _streamingRecognizeStream.WriteAsync(
+                        new StreamingRecognizeRequest
+                        {
+                            AudioContent = Google.Protobuf.ByteString
+                                .CopyFrom(args.Buffer, 0, args.BytesRecorded),
+                        }).Wait();
+                }
+                catch (Exception e)
+                {
+                    OnError?.Invoke(this, new SpeechRecognizerErrorEventArgs(e));
+                    StopRecognition();
+                    StartRecognitionAsync();
+                }
             }
         }
 
         public event SpechRecognizerHandler OnSpeechRecognized;
+        public event SpeechRecognizerErrorHandler OnError;
 
         public void StartRecognitionAsync()
         {
@@ -119,7 +138,15 @@ namespace GoogleSpeechApi.Recognizer
         {
             _waveInEvent.StopRecording();
             lock (_writeLock) _writeMore = false;
-            _streamingRecognizeStream.WriteCompleteAsync().Wait();
+
+            try
+            {
+                _streamingRecognizeStream.WriteCompleteAsync().Wait();
+            }
+            catch
+            {
+                // ignored
+            }
         }
 
         public async Task StartRecognition()

@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using GoogleSpeechApi.Commands.Interfaces;
 using GoogleSpeechApi.Extensions;
 using GoogleSpeechApi.Grammars.Config;
 using GoogleSpeechApi.Grammars.Interfaces;
@@ -9,24 +12,40 @@ namespace GoogleSpeechApi.Grammars
     public class Grammar
     {
         private readonly IEnumerable<IInputPreprocessor> _preprocessors = DefaultConfig.GetPreprocessors();
+        private readonly Queue<Tuple<ICommand, string>> _invokationQueue = new Queue<Tuple<ICommand, string>>();
 
-        public List<GrammarCommandBinding> Bindings { get; }
+        public List<GrammarRule> Rules { get; }
 
         public Grammar()
         {
-            Bindings = new List<GrammarCommandBinding>();
+            Rules = new List<GrammarRule>();
         }
 
         public bool Execute(string input)
         {
-            string preprocessedString = _preprocessors.Run(input);
-            foreach (var binding in Bindings)
+            List<string> preprocessedInput = Preprocess(input);
+            IEnumerable<string> remaining = preprocessedInput.ToList();
+            int currentRuleIndex = 0;
+            while(currentRuleIndex < Rules.Count && remaining.Any())
             {
-                bool executed = binding.Execute(preprocessedString);
-                if (executed)
-                    return true;
+                var rule = Rules[currentRuleIndex];
+                MatchingResult result = rule.Match(remaining, out remaining);
+                if (result.IsMatched)
+                {
+                    rule.ExecuteCommand(result.InvokationParam);
+                    currentRuleIndex = 0;
+                }
+                currentRuleIndex++;
             }
-            return false;
+            return remaining.Any();
+        }
+
+        private List<string> Preprocess(string input)
+        {
+            List<string> preprocessedInput = _preprocessors.Run(input)
+                .Split(' ')
+                .ToList();
+            return preprocessedInput;
         }
     }
 }

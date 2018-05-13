@@ -11,7 +11,7 @@ namespace GoogleSpeechApi.Grammars.Config
             return new List<IInputPreprocessor>
             {
                 new StringLowerPreprocessor(),
-                new StringLowerPreprocessor()
+                new TrimmerPreprocessor()
             };
         }
     }

@@ -1,7 +1,9 @@
-﻿namespace GoogleSpeechApi.Grammars.Interfaces
+﻿using System.Collections.Generic;
+
+namespace GoogleSpeechApi.Grammars.Interfaces
 {
     public interface ITextSequence
     {
-        string Match(string text, out string remainingText);
+        IEnumerable<string> Match(IEnumerable<string> text, out IEnumerable<string> remainingText);
     }
 }

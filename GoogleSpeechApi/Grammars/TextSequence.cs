@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using GoogleSpeechApi.Grammars.Interfaces;
 
@@ -17,32 +18,28 @@ namespace GoogleSpeechApi.Grammars
                 .ToList();
         }
 
-        public string Match(string text, out string remainingText)
+        public IEnumerable<string> Match(IEnumerable<string> text, out IEnumerable<string> remainingText)
         {
             List<string> textPattern = text
-                .Split(WhiteSpace)
-                .Select(s => s.ToLower())
                 .ToList();
 
-            remainingText = text;
-            int count = MatchingPattern.Count;
-            if (textPattern.Count < count)
+            remainingText = textPattern.ToList();
+            if (textPattern.Count < MatchingPattern.Count)
             {
-                return string.Empty;
+                return Enumerable.Empty<string>();
             }
 
             List<string> matchesList = new List<string>();
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < MatchingPattern.Count; i++)
             {
                 if (textPattern[i] == MatchingPattern[i])
                     matchesList.Add(textPattern[i]);
                 else
-                    return string.Empty;
+                    return Enumerable.Empty<string>();
             }
 
-            string matched = string.Join(WhiteSpace.ToString(), matchesList);
-            remainingText = text.Replace(matched, string.Empty);
-            return matched;
+            remainingText = matchesList.Skip(matchesList.Count).ToList();
+            return matchesList;
         }
     }
 }

@@ -10,5 +10,10 @@ namespace GoogleSpeechApi.Extensions
             remainingString = words.Skip(1).JoinToString(" ");
             return words.FirstOrDefault();
         }
+
+        public static string PeekWord(this string input)
+        {
+            return input.Split(' ').FirstOrDefault();
+        }
     }
 }

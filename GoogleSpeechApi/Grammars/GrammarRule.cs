@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GoogleSpeechApi.Commands.Interfaces;
+using GoogleSpeechApi.Extensions;
 using GoogleSpeechApi.Grammars.Interfaces;
 
 namespace GoogleSpeechApi.Grammars
@@ -7,33 +9,32 @@ namespace GoogleSpeechApi.Grammars
     public class GrammarRule : IGrammarRule
     {
         public List<ITextSequence> TextSequences { get; }
+        public ICommand Command { get; set; }
 
-        public GrammarRule()
-        {
-            TextSequences = new List<ITextSequence>();
-        }
-
-        public GrammarRule(List<ITextSequence> textSequences)
+        public GrammarRule(List<ITextSequence> textSequences, ICommand command)
         {
             TextSequences = textSequences;
+            Command = command;
         }
 
-        public bool Match(string input, out string mathedResult)
+        public MatchingResult Match(IEnumerable<string> input, out IEnumerable<string> remaining)
         {
-            bool result = true;
-            mathedResult = string.Empty;
+            List<string> matchedResult = new List<string>();
+            remaining = input.ToList();
             foreach (ITextSequence textSequence in TextSequences)
             {
-                if (result)
-                {
-                    mathedResult = textSequence.Match(input, out input);
-                    result = mathedResult != string.Empty;
-                }
+                List<string> currentMatch = textSequence.Match(remaining, out remaining).ToList();
+                if(currentMatch.Any())
+                    matchedResult.AddRange(currentMatch);
                 else
                     break;
             }
-            return result;
+            return new MatchingResult(matchedResult, matchedResult.JoinToString(" "));
         }
 
+        public void ExecuteCommand(string param)
+        {
+            Command.Execute(param);
+        }
     }
 }

@@ -1,7 +1,10 @@
-﻿namespace GoogleSpeechApi.Grammars.Interfaces
+﻿using System.Collections.Generic;
+
+namespace GoogleSpeechApi.Grammars.Interfaces
 {
     public interface IGrammarRule
     {
-        bool Match(string input, out string matchedResult);
+        MatchingResult Match(IEnumerable<string> input, out IEnumerable<string> remaining);
+        void ExecuteCommand(string param);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GoogleSpeechApi.Commands.Interfaces;
 using GoogleSpeechApi.Extensions;
 using GoogleSpeechApi.Grammars.Interfaces;
 using GoogleSpeechApi.Grammars.Preprocessors;
@@ -9,6 +10,8 @@ namespace GoogleSpeechApi.Grammars.Config
 {
     public class GrammarRuleBuilder
     {
+        public static GrammarRuleBuilder Get => new GrammarRuleBuilder();
+
         private readonly IEnumerable<string> _wildCards = new List<string>
         {
             "<text>"
@@ -16,15 +19,31 @@ namespace GoogleSpeechApi.Grammars.Config
 
         private readonly IEnumerable<IInputPreprocessor> _preprocessors = DefaultConfig.GetPreprocessors();
 
+        private ICommand Command { get; set; }
+        private string InputString { get; set; }
 
-        public GrammarRule FromString(string input)
+        public GrammarRuleBuilder FromString(string input)
         {
-            string processedString = _preprocessors.Run(input);
-            var rule = new GrammarRule();
+            InputString = input;
+            return this;
+        }
+
+        public GrammarRuleBuilder WithCommand(ICommand command)
+        {
+            Command = command;
+            return this;
+        }
+
+        public GrammarRule Build()
+        {
+            string processedString = _preprocessors.Run(InputString);
+            List<ITextSequence> sequences = new List<ITextSequence>();
             while (processedString != string.Empty)
             {
-                rule.TextSequences.Add(GetNextTextSequence(processedString, out processedString));
+                sequences.Add(GetNextTextSequence(processedString, out processedString));
             }
+
+            var rule = new GrammarRule(sequences, Command);
             return rule;
         }
 
@@ -37,16 +56,18 @@ namespace GoogleSpeechApi.Grammars.Config
         {
             List<string> buffer = new List<string>();
 
-            string word = input.PopWord(out input);
+            string word = input.PopWord(out remainingString);
             if (IsWildCard(word))
-                throw new NotImplementedException("Implement wildcards");
-            while (!IsWildCard(word) && !string.IsNullOrEmpty(word))
+                return new TextWildCard();
+            while (!string.IsNullOrEmpty(word))
             {
                 buffer.Add(word);
-                word = input.PopWord(out input);
+                if (!IsWildCard(remainingString.PeekWord()))
+                    word = remainingString.PopWord(out remainingString);
+                else
+                    break;
             }
 
-            remainingString = input;
             return new TextSequence(buffer);
         }
     }

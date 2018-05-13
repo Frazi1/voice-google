@@ -23,12 +23,14 @@ namespace VoiceCodeWpf
         {
             InitializeComponent();
             _grammar = new Grammar();
-            var builder = new GrammarRuleBuilder();
-            _grammar.Bindings.Add(new GrammarCommandBinding
-            {
-                GrammarRule = builder.FromString("Валера ест огурцы"),
-                Command = new PrintCommand(AppendCode)
-            });
+            _grammar.Rules.Add(GrammarRuleBuilder.Get
+                .FromString("Валера ест огурцы")
+                .WithCommand(new PrintCommand(AppendCode))
+                .Build());
+            _grammar.Rules.Add(GrammarRuleBuilder.Get
+                .FromString("переменная <text>")
+                .WithCommand(new PrintCommand(AppendCode))
+                .Build());
         }
 
         private void AppendCode(string text)
@@ -38,7 +40,7 @@ namespace VoiceCodeWpf
 
         private void AppendToEditor(TextEditor editor, string text)
         {
-            Dispatcher.Invoke(() => { editor.AppendText(text); });
+            Dispatcher.Invoke(() => { editor.AppendText(text.ToLower()); });
         }
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -48,7 +50,8 @@ namespace VoiceCodeWpf
                 AppendToEditor(TextEditorHistory, args.Text + Environment.NewLine);
                 _grammar.Execute(args.Text);
             };
-            //r.OnSpeechRecognized += (o, args) => { AppendToEditor(args.Text); };
+            _recongizer.OnError += (o, args) => { AppendToEditor(TextEditorHistory, args.Exception.ToString()); };
+//r.OnSpeechRecognized += (o, args) => { AppendToEditor(args.Text); };
             _recongizer.StartRecognitionAsync();
         }
     }

@@ -125,6 +125,7 @@
     <Compile Include="Context\VariableRepresentation.cs" />
     <Compile Include="DI\DiModule.cs" />
     <Compile Include="DI\Kernel.cs" />
+    <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Grammars\Config\DefaultConfig.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Grammars\Interfaces\IGrammarRule.cs" />
     <Compile Include="Grammars\Interfaces\ITextSequence.cs" />
     <Compile Include="Grammars\MatchingResult.cs" />
+    <Compile Include="Grammars\Preprocessors\EnglishToRussianTransliterator.cs" />
     <Compile Include="Grammars\Preprocessors\PreprocessorRunner.cs" />
     <Compile Include="Grammars\Preprocessors\StringLowerPreprocessor.cs" />
     <Compile Include="Grammars\TextSequence.cs" />

@@ -17,7 +17,7 @@ namespace GoogleSpeechApi.Grammars
             Command = command;
         }
 
-        public MatchingResult Match(IEnumerable<string> input, out IEnumerable<string> remaining)
+        public virtual MatchingResult Match(IEnumerable<string> input, out IEnumerable<string> remaining)
         {
             List<string> matchedResult = new List<string>();
             remaining = input.ToList();
@@ -32,7 +32,7 @@ namespace GoogleSpeechApi.Grammars
             return new MatchingResult(matchedResult, matchedResult.JoinToString(" "));
         }
 
-        public void ExecuteCommand(string param)
+        public virtual void ExecuteCommand(string param)
         {
             Command.Execute(param);
         }

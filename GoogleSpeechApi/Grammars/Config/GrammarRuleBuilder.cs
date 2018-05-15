@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using GoogleSpeechApi.Commands.Interfaces;
+using GoogleSpeechApi.DI;
 using GoogleSpeechApi.Extensions;
 using GoogleSpeechApi.Grammars.Interfaces;
 using GoogleSpeechApi.Grammars.Preprocessors;
+using Ninject;
 
 namespace GoogleSpeechApi.Grammars.Config
 {
@@ -58,7 +59,8 @@ namespace GoogleSpeechApi.Grammars.Config
 
             string word = input.PopWord(out remainingString);
             if (IsWildCard(word))
-                return new TextWildCard();
+                return Kernel.Instance.Get<TextWildCard>();
+
             while (!string.IsNullOrEmpty(word))
             {
                 buffer.Add(word);

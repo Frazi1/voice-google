@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using GoogleSpeechApi;
+using GoogleSpeechApi.Context.Interfaces;
+using GoogleSpeechApi.DI;
 using GoogleSpeechApi.Grammars;
 using GoogleSpeechApi.Grammars.Config;
 using GoogleSpeechApi.Recognizer;
 using GoogleSpeechApi.Recognizer.Interfaces;
 using ICSharpCode.AvalonEdit;
+using Ninject;
 using VoiceCodeWpf.Commands;
 
 namespace VoiceCodeWpf
@@ -16,13 +18,12 @@ namespace VoiceCodeWpf
     public partial class MainWindow
     {
         private readonly ISpeechRecongizer _recongizer = new GoogleSpechRecognizerWrapper();
-        private Task t;
         private readonly Grammar _grammar;
 
         public MainWindow()
         {
             InitializeComponent();
-            _grammar = new Grammar();
+            _grammar = new Grammar(Kernel.Instance.Get<IIdeContext>());
             _grammar.Rules.Add(GrammarRuleBuilder.Get
                 .FromString("Валера ест огурцы")
                 .WithCommand(new PrintCommand(AppendCode))

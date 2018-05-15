@@ -17,7 +17,7 @@ namespace GoogleSpeechApi.Recognizer
         private readonly WaveInEvent _waveInEvent = new WaveInEvent
         {
             DeviceNumber = 0,
-            WaveFormat = new NAudio.Wave.WaveFormat(16000, 1)
+            WaveFormat = new WaveFormat(16000, 1)
         };
 
         private SpeechClient _speechClient;
@@ -43,7 +43,7 @@ namespace GoogleSpeechApi.Recognizer
             return streamingRecognizeRequest;
         }
 
-        private async Task<int> StreamingMicRecognizeAsync(int seconds)
+        private async Task<int> StreamingMicRecognizeAsync()
         {
             try
             {
@@ -126,7 +126,7 @@ namespace GoogleSpeechApi.Recognizer
 
         public void StartRecognitionAsync()
         {
-            StreamingMicRecognizeAsync(100).ConfigureAwait(false);
+            StreamingMicRecognizeAsync().ConfigureAwait(false);
             //            StreamingMicRecognizeAsync(100);
             OnSpeechRecognized += (o, a) =>
             {
@@ -151,7 +151,7 @@ namespace GoogleSpeechApi.Recognizer
 
         public async Task StartRecognition()
         {
-            await StreamingMicRecognizeAsync(100);
+            await StreamingMicRecognizeAsync();
 
         }
     }

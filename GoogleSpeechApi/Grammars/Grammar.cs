@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GoogleSpeechApi.Commands.Interfaces;
-using GoogleSpeechApi.Extensions;
+using GoogleSpeechApi.Context.Interfaces;
 using GoogleSpeechApi.Grammars.Config;
 using GoogleSpeechApi.Grammars.Interfaces;
 using GoogleSpeechApi.Grammars.Preprocessors;
@@ -13,12 +13,14 @@ namespace GoogleSpeechApi.Grammars
     {
         private readonly IEnumerable<IInputPreprocessor> _preprocessors = DefaultConfig.GetPreprocessors();
         private readonly Queue<Tuple<ICommand, string>> _invokationQueue = new Queue<Tuple<ICommand, string>>();
+        private readonly IIdeContext _ideContext;
 
         public List<GrammarRule> Rules { get; }
 
-        public Grammar()
+        public Grammar(IIdeContext ideContext)
         {
             Rules = new List<GrammarRule>();
+            _ideContext = ideContext;
         }
 
         public bool Execute(string input)

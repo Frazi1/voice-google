@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using GoogleSpeechApi.Grammars.Interfaces;
 
@@ -38,7 +37,7 @@ namespace GoogleSpeechApi.Grammars
                     return Enumerable.Empty<string>();
             }
 
-            remainingText = matchesList.Skip(matchesList.Count).ToList();
+            remainingText = textPattern.Skip(matchesList.Count).ToList();
             return matchesList;
         }
     }

@@ -156,7 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\packages\Metaphone.NET.1.0.4\Metaphone.NET\Metaphone.NET.csproj">
-      <Project>{a795f1e1-9357-430b-a86f-44db614e595a}</Project>
+      <Project>{A795F1E1-9357-430B-A86F-44DB614E595A}</Project>
       <Name>Metaphone.NET</Name>
     </ProjectReference>
   </ItemGroup>

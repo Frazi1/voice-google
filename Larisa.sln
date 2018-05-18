@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleSpeechApi", "GoogleSp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metaphone.NET", "packages\Metaphone.NET.1.0.4\Metaphone.NET\Metaphone.NET.csproj", "{A795F1E1-9357-430B-A86F-44DB614E595A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speech.Test", "Speech.Test\Speech.Test.csproj", "{4BAD3BC4-E45D-4C5C-A932-A3CF71A1025E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{A795F1E1-9357-430B-A86F-44DB614E595A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A795F1E1-9357-430B-A86F-44DB614E595A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A795F1E1-9357-430B-A86F-44DB614E595A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BAD3BC4-E45D-4C5C-A932-A3CF71A1025E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BAD3BC4-E45D-4C5C-A932-A3CF71A1025E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BAD3BC4-E45D-4C5C-A932-A3CF71A1025E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BAD3BC4-E45D-4C5C-A932-A3CF71A1025E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

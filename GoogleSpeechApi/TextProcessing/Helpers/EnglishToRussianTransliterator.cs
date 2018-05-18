@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using GoogleSpeechApi.TextProcessing.Interfaces;
 using JetBrains.Annotations;
 
-namespace GoogleSpeechApi.Grammars.Preprocessors
+namespace GoogleSpeechApi.TextProcessing.Helpers
 {
     [UsedImplicitly]
-    public class EnglishToRussianTransliterator
+    public class EnglishToRussianTransliterator : ITextTransliterator
     {
         private static readonly Dictionary<string, string> Gost = new Dictionary<string, string>
         {
@@ -87,7 +88,7 @@ namespace GoogleSpeechApi.Grammars.Preprocessors
             {" ", "-"},
         }; //ГОСТ 16876-71
 
-        public readonly Dictionary<string, string> Iso = new Dictionary<string, string>
+        private static readonly Dictionary<string, string> Iso = new Dictionary<string, string>
         {
             {"Є", "YE"},
             {"І", "I"},
@@ -168,6 +169,13 @@ namespace GoogleSpeechApi.Grammars.Preprocessors
             {" ", "-"}
         }; //ISO 9-95
 
+        private Dictionary<string, string> GetDictionaryByType(TransliterationType type)
+        {
+            Dictionary<string, string> tdict = Iso;
+            if (type == TransliterationType.Gost) tdict = Gost;
+            return tdict;
+        }
+
 
         public string ToEnglish(string text, TransliterationType type = TransliterationType.ISO)
         {
@@ -202,11 +210,15 @@ namespace GoogleSpeechApi.Grammars.Preprocessors
             return output;
         }
 
-        private Dictionary<string, string> GetDictionaryByType(TransliterationType type)
+
+        public string ToCodeNativeLanguage(string input)
         {
-            Dictionary<string, string> tdict = Iso;
-            if (type == TransliterationType.Gost) tdict = Gost;
-            return tdict;
+            return ToEnglish(input);
+        }
+
+        public string ToSpeechNativeLanguage(string input)
+        {
+            return ToRussian(input);
         }
     }
 

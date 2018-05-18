@@ -1,5 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-using GoogleSpeechApi.SpeechProcessing.Interfaces;
+using GoogleSpeechApi.TextProcessing.Interfaces;
 using JetBrains.Annotations;
 // ReSharper disable All
 

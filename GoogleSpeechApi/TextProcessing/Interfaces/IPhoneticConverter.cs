@@ -1,4 +1,4 @@
-﻿namespace GoogleSpeechApi.SpeechProcessing.Interfaces
+﻿namespace GoogleSpeechApi.TextProcessing.Interfaces
 {
     public interface IPhoneticConverter
     {

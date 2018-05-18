@@ -124,6 +124,7 @@
     <Compile Include="Context\Provider\IVariableProvider.cs" />
     <Compile Include="Context\VariableRepresentation.cs" />
     <Compile Include="DI\DiModule.cs" />
+    <Compile Include="DI\Interfaces\ILogger.cs" />
     <Compile Include="DI\Kernel.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
@@ -136,7 +137,7 @@
     <Compile Include="Grammars\Interfaces\IGrammarRule.cs" />
     <Compile Include="Grammars\Interfaces\ITextSequence.cs" />
     <Compile Include="Grammars\MatchingResult.cs" />
-    <Compile Include="Grammars\Preprocessors\EnglishToRussianTransliterator.cs" />
+    <Compile Include="TextProcessing\Helpers\EnglishToRussianTransliterator.cs" />
     <Compile Include="Grammars\Preprocessors\PreprocessorRunner.cs" />
     <Compile Include="Grammars\Preprocessors\StringLowerPreprocessor.cs" />
     <Compile Include="Grammars\TextSequence.cs" />
@@ -146,9 +147,13 @@
     <Compile Include="Grammars\Grammar.cs" />
     <Compile Include="Recognizer\Interfaces\ISpeechRecongizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SpeechProcessing\Interfaces\IPhoneticConverter.cs" />
-    <Compile Include="SpeechProcessing\Metaphone.cs" />
-    <Compile Include="SpeechProcessing\MetaphoneRu.cs" />
+    <Compile Include="TextProcessing\Interfaces\IPhoneticConverter.cs" />
+    <Compile Include="TextProcessing\Interfaces\IStringDistanceEvaluator.cs" />
+    <Compile Include="TextProcessing\Helpers\LevensteinDistanceEvaluator.cs" />
+    <Compile Include="TextProcessing\Helpers\Metaphone.cs" />
+    <Compile Include="TextProcessing\Helpers\MetaphoneRu.cs" />
+    <Compile Include="TextProcessing\Interfaces\ITextTransliterator.cs" />
+    <Compile Include="TextProcessing\VariableResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

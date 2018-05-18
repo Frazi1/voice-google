@@ -9,6 +9,7 @@ using GoogleSpeechApi.Recognizer.Interfaces;
 using ICSharpCode.AvalonEdit;
 using Ninject;
 using VoiceCodeWpf.Commands;
+using VoiceCodeWpf.DI;
 
 namespace VoiceCodeWpf
 {
@@ -23,6 +24,8 @@ namespace VoiceCodeWpf
         public MainWindow()
         {
             InitializeComponent();
+            Kernel.Instance.Load(new DI.DiModule());
+
             _grammar = new Grammar(Kernel.Instance.Get<IIdeContext>());
             _grammar.Rules.Add(GrammarRuleBuilder.Get
                 .FromString("Валера ест огурцы")

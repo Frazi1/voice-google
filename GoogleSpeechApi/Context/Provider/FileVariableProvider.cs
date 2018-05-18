@@ -2,7 +2,8 @@
 using System.IO;
 using System.Linq;
 using GoogleSpeechApi.Grammars.Preprocessors;
-using GoogleSpeechApi.SpeechProcessing.Interfaces;
+using GoogleSpeechApi.TextProcessing.Helpers;
+using GoogleSpeechApi.TextProcessing.Interfaces;
 using JetBrains.Annotations;
 
 namespace GoogleSpeechApi.Context.Provider
@@ -12,9 +13,9 @@ namespace GoogleSpeechApi.Context.Provider
     {
         public string Path { get; }
         private IPhoneticConverter PhoneticConverter { get; }
-        private readonly EnglishToRussianTransliterator _transliterator;
+        private readonly ITextTransliterator _transliterator;
 
-        public FileVariableProvider(string path, IPhoneticConverter phoneticConverter, EnglishToRussianTransliterator transliterator)
+        public FileVariableProvider(string path, IPhoneticConverter phoneticConverter, ITextTransliterator transliterator)
         {
             Path = path;
             PhoneticConverter = phoneticConverter;

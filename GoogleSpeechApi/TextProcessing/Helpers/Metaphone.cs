@@ -1,4 +1,4 @@
-﻿using GoogleSpeechApi.SpeechProcessing.Interfaces;
+﻿using GoogleSpeechApi.TextProcessing.Interfaces;
 using JetBrains.Annotations;
 using nullpointer.Metaphone;
 

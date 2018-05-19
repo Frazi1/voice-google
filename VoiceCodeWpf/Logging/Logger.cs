@@ -12,7 +12,8 @@ namespace VoiceCodeWpf.Logging
         private readonly object _sync = new object();
         private readonly string _pathToLog;
 
-        private string Filename => Path.Combine(_pathToLog, $"{AppDomain.CurrentDomain.FriendlyName}_{DateTime.Now:dd.MM.yyy}.log");
+        private string Filename =>
+            Path.Combine(_pathToLog, $"{AppDomain.CurrentDomain.FriendlyName}_{DateTime.Now:dd.MM.yyy}.log");
 
 
         public Logger()
@@ -26,7 +27,8 @@ namespace VoiceCodeWpf.Logging
         {
             try
             {
-                string fullText = $"[{DateTime.Now:dd.MM.yyy HH:mm:ss.fff}] [{ex.TargetSite.DeclaringType}.{ex.TargetSite.Name}()] {ex.Message}\r\n";
+                string fullText =
+                    $"[{DateTime.Now:dd.MM.yyy HH:mm:ss.fff}] [{ex.TargetSite.DeclaringType}.{ex.TargetSite.Name}()] {ex.Message}\r\n";
                 WriteText(fullText);
             }
             catch
@@ -46,7 +48,7 @@ namespace VoiceCodeWpf.Logging
 
         public void Info(string message)
         {
-            WriteText(message);
+            WriteText(message + Environment.NewLine);
         }
     }
 }

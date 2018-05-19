@@ -44,20 +44,29 @@
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.2.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Phonix, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Phonix.1.0.1.0\lib\net40\Phonix.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LeventeinTest.cs" />
+    <Compile Include="MetahoneTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GoogleSpeechApi\GoogleSpeechApi.csproj">
       <Project>{C4AC34C2-EEBE-447B-B8B8-82788BF2224E}</Project>
       <Name>GoogleSpeechApi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\packages\Metaphone.NET.1.0.4\Metaphone.NET\Metaphone.NET.csproj">
+      <Project>{A795F1E1-9357-430B-A86F-44DB614E595A}</Project>
+      <Name>Metaphone.NET</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

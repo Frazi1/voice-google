@@ -82,6 +82,9 @@
     <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
     </Reference>
+    <Reference Include="Phonix, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Phonix.1.0.1.0\lib\net40\Phonix.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -137,6 +140,7 @@
     <Compile Include="Grammars\Interfaces\IGrammarRule.cs" />
     <Compile Include="Grammars\Interfaces\ITextSequence.cs" />
     <Compile Include="Grammars\MatchingResult.cs" />
+    <Compile Include="TextProcessing\Helpers\CaverPhone.cs" />
     <Compile Include="TextProcessing\Helpers\EnglishToRussianTransliterator.cs" />
     <Compile Include="Grammars\Preprocessors\PreprocessorRunner.cs" />
     <Compile Include="Grammars\Preprocessors\StringLowerPreprocessor.cs" />
@@ -147,6 +151,10 @@
     <Compile Include="Grammars\Grammar.cs" />
     <Compile Include="Recognizer\Interfaces\ISpeechRecongizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextProcessing\Helpers\PhonixMetaphoneAdapter.cs" />
+    <Compile Include="TextProcessing\Helpers\SimplePhonemeCorrector.cs" />
+    <Compile Include="TextProcessing\Helpers\WAMatchRating.cs" />
+    <Compile Include="TextProcessing\Interfaces\IPhonemeCorrector.cs" />
     <Compile Include="TextProcessing\Interfaces\IPhoneticConverter.cs" />
     <Compile Include="TextProcessing\Interfaces\IStringDistanceEvaluator.cs" />
     <Compile Include="TextProcessing\Helpers\LevensteinDistanceEvaluator.cs" />

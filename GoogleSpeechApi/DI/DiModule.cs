@@ -13,7 +13,12 @@ namespace GoogleSpeechApi.DI
     {
         public override void Load()
         {
-            Bind<IPhoneticConverter>().To<Metaphone>();
+            //Bind<IPhoneticConverter>().To<Metaphone>();
+            //Bind<IPhoneticConverter>().To<WAMatchRating>().InSingletonScope();
+            //Bind<IPhoneticConverter>().To<CaverPhone>().InSingletonScope();
+            Bind<IPhoneticConverter>().To<PhonixMetaphoneAdapter>().InSingletonScope();
+
+            Bind<IPhonemeCorrector>().To<SimplePhonemeCorrector>().InSingletonScope();
             Bind<IStringDistanceEvaluator>().To<LevensteinDistanceEvaluator>().InSingletonScope();
             Bind<ITextTransliterator>().To<EnglishToRussianTransliterator>().InSingletonScope();
 

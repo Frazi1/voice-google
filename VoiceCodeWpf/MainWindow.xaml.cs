@@ -44,7 +44,7 @@ namespace VoiceCodeWpf
 
         private void AppendToEditor(TextEditor editor, string text)
         {
-            Dispatcher.Invoke(() => { editor.AppendText(text.ToLower()); });
+            Dispatcher.Invoke(() => { editor.AppendText(text); });
         }
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -52,7 +52,7 @@ namespace VoiceCodeWpf
             _recongizer.OnSpeechRecognized += (o, args) =>
             {
                 AppendToEditor(TextEditorHistory, args.Text + Environment.NewLine);
-                _grammar.Execute(args.Text);
+                _grammar.Execute(args.Text + Environment.NewLine);
             };
             _recongizer.OnError += (o, args) => { AppendToEditor(TextEditorHistory, args.Exception.ToString()); };
 //r.OnSpeechRecognized += (o, args) => { AppendToEditor(args.Text); };

@@ -37,7 +37,7 @@ namespace GoogleSpeechApi.Recognizer
                         MaxAlternatives = 0,
                         SpeechContexts = {speechContext}
                     },
-                    InterimResults = true
+                    InterimResults = true,
                 }
             };
             return streamingRecognizeRequest;
@@ -56,7 +56,7 @@ namespace GoogleSpeechApi.Recognizer
                 _streamingRecognizeStream = _speechClient.StreamingRecognize();
                 var speechContext = new SpeechContext();
                 speechContext.Phrases.AddRange(new[]
-                    {"int", "for", "true", "false", "public", "private", "bool", "static", "void"});
+                    {"int", "for", "true", "false", "public", "private", "bool", "static", "void", "переменная"});
                 // Write the initial request with the config.
                 StreamingRecognizeRequest recognizeRequest = GetStreamingRecognizeRequest(speechContext);
                 await _streamingRecognizeStream.WriteAsync(recognizeRequest);

@@ -3,7 +3,6 @@ using System.Linq;
 using GoogleSpeechApi.Context;
 using GoogleSpeechApi.Context.Provider;
 using GoogleSpeechApi.DI.Interfaces;
-using GoogleSpeechApi.TextProcessing.Helpers;
 using GoogleSpeechApi.TextProcessing.Interfaces;
 using JetBrains.Annotations;
 
@@ -40,7 +39,7 @@ namespace GoogleSpeechApi.TextProcessing
             _logger.Info($"Phonetic: {phoneticInput}");
             var distances = CalculateDistances(variables, phoneticInput);
             var sortedDistances = distances
-                .ToList().OrderByDescending(pair => pair.Value)
+                .ToList().OrderBy(pair => pair.Value)
                 .ToList();
             sortedDistances.ForEach(kvp => _logger.Info($"{kvp.Key.Name}({kvp.Key.PhoneticName}) - {kvp.Value}"));
             _logger.Info("=========================================");

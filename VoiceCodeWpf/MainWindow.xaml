@@ -6,10 +6,13 @@
         xmlns:local="clr-namespace:VoiceCodeWpf"
         xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d"
-        Title="MainWindow" Height="400" Width="850">
-    <Grid>
-        <avalonEdit:TextEditor SyntaxHighlighting="C#" Name="CodeEditor" HorizontalAlignment="Left" Width="496" />
-        <Button Content="Button" HorizontalAlignment="Left" Margin="406,50,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <avalonEdit:TextEditor SyntaxHighlighting="C#" Name="TextEditorHistory" HorizontalAlignment="Right" Width="341" />
+        Title="MainWindow" Height="400" Width="413.8"
+        KeyUp="EvalRecognitionEventHandle"
+        >
+    <Grid Margin="0,0,2,0">
+        <avalonEdit:TextEditor SyntaxHighlighting="C#" Name="CodeEditor" Margin="0,0,0,27" HorizontalAlignment="Left" Width="200" />
+        <Button Content="Старт" HorizontalAlignment="Left" Margin="196,342,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <avalonEdit:TextEditor SyntaxHighlighting="C#" Name="TextEditorHistory" Margin="200,0,0,27" HorizontalAlignment="Left" Width="200" />
+        <Button Content="Стоп" HorizontalAlignment="Left" Margin="285,342,0,0" Width="75" Click="Button_Click" Height="20" VerticalAlignment="Top"/>
     </Grid>
 </Window>

@@ -15,5 +15,12 @@ namespace GoogleSpeechApi.Extensions
         {
             return input.Split(' ').FirstOrDefault();
         }
+
+        public static string RemoveChars(this string input, params string[] chars )
+        {
+            string res = input;
+            chars.ForEach(c => res = res.Replace(c, ""));
+            return res;
+        }
     }
 }

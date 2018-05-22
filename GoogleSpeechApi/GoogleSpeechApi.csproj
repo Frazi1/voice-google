@@ -151,6 +151,7 @@
     <Compile Include="Grammars\Grammar.cs" />
     <Compile Include="Recognizer\Interfaces\ISpeechRecongizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextProcessing\Helpers\NoPhonetic.cs" />
     <Compile Include="TextProcessing\Helpers\PhonixMetaphoneAdapter.cs" />
     <Compile Include="TextProcessing\Helpers\SimplePhonemeCorrector.cs" />
     <Compile Include="TextProcessing\Helpers\WAMatchRating.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using GoogleSpeechApi.SpeechProcessing;
+using GoogleSpeechApi.TextProcessing.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Speech.Test

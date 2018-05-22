@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using GoogleSpeechApi.TextProcessing.Interfaces;
 
-namespace GoogleSpeechApi.SpeechProcessing
+namespace GoogleSpeechApi.TextProcessing.Helpers
 {
     public class LevensteinDistanceEvaluator : IStringDistanceEvaluator
     {

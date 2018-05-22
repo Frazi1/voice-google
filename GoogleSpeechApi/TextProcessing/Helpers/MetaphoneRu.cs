@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using GoogleSpeechApi.TextProcessing.Helpers;
 using GoogleSpeechApi.TextProcessing.Interfaces;
 using JetBrains.Annotations;
 // ReSharper disable All
@@ -23,6 +24,13 @@ namespace GoogleSpeechApi.SpeechProcessing
     [UsedImplicitly]
     public class MetaphoneRu: IPhoneticConverter
     {
+        private readonly EnglishToRussianTransliterator _transliterator;
+
+        public MetaphoneRu(EnglishToRussianTransliterator transliterator)
+        {
+            _transliterator = transliterator;
+        }
+
         private static string Normalize(string value)
         {
             value = Regex.Replace(value, @"[^АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЫыЭэЮюЯя]",
@@ -113,6 +121,7 @@ namespace GoogleSpeechApi.SpeechProcessing
         /// <returns></returns>
         public string GetPhonetic(string value)
         {
+            value = _transliterator.ToRussian(value);
             value = Normalize(value);
             value = RemoveDuplicates(value);
             value = IOtoI(value);

@@ -81,3 +81,7 @@
 /VoiceCodeWpf/obj/Debug/VoiceCodeWpf_MarkupCompile.lref
 bin
 obj
+/IdentifierExtractor/.vs/IdentifierExtractor/v15/.suo
+/IdentifierExtractor/.vs/IdentifierExtractor/v15/Server/sqlite3/db.lock
+/IdentifierExtractor/.vs/IdentifierExtractor/v15/Server/sqlite3/storage.ide
+/IdentifierExtractor/IdentifierExtractor/IdentifierExtractor.csproj.user

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
+using GoogleSpeechApi.Extensions;
 using GoogleSpeechApi.Grammars.Preprocessors;
 using GoogleSpeechApi.TextProcessing.Helpers;
 using GoogleSpeechApi.TextProcessing.Interfaces;
@@ -26,11 +28,11 @@ namespace GoogleSpeechApi.Context.Provider
         {
             string[] lines = File.ReadAllLines(Path);
             return lines
-                .Select(line =>
+                .Select(name =>
                 {
                     //string russianName = _transliterator.ToRussian(line);
-                    string phoneticName = PhoneticConverter.GetPhonetic(line);
-                    VariableRepresentation variableRepresentation = new VariableRepresentation(line, phoneticName);
+                    string phoneticName = PhoneticConverter.GetPhonetic(name);
+                    VariableRepresentation variableRepresentation = new VariableRepresentation(name, phoneticName, name.UpperNormalize());
                     return variableRepresentation;
                 });
         }

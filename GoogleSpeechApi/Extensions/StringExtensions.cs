@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Text;
 
 namespace GoogleSpeechApi.Extensions
 {
@@ -21,6 +22,18 @@ namespace GoogleSpeechApi.Extensions
             string res = input;
             chars.ForEach(c => res = res.Replace(c, ""));
             return res;
+        }
+
+        public static string UpperNormalize(this string s)
+        {
+            var sb = new StringBuilder();
+            foreach (char c in s)
+            {
+                if (char.IsLetterOrDigit(c))
+                    sb.Append(c);
+            }
+
+            return sb.ToString().ToUpper();
         }
     }
 }

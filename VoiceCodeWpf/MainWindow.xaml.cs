@@ -23,6 +23,7 @@ namespace VoiceCodeWpf
         private readonly ISpeechRecongizer _recongizer = Kernel.Instance.Get<GoogleSpechRecognizerWrapper>();
         private readonly Grammar _grammar;
         private string lastRecognized;
+        private bool subscribed = false;
 
         public MainWindow()
         {
@@ -58,12 +59,17 @@ namespace VoiceCodeWpf
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            _recongizer.OnSpeechRecognized += (o, args) =>
+            if (!subscribed)
             {
-                AppendToEditor(TextEditorHistory, args.Text + Environment.NewLine);
-                _grammar.Execute(args.Text + Environment.NewLine);
-            };
-            _recongizer.OnError += (o, args) => { AppendToEditor(TextEditorHistory, args.Exception.ToString()); };
+                _recongizer.OnSpeechRecognized += (o, args) =>
+                {
+                    AppendToEditor(TextEditorHistory, args.Text + Environment.NewLine);
+                    _grammar.Execute(args.Text + Environment.NewLine);
+                };
+                _recongizer.OnError += (o, args) => { AppendToEditor(TextEditorHistory, args.Exception.ToString()); };
+                subscribed = true;
+            }
+
 //r.OnSpeechRecognized += (o, args) => { AppendToEditor(args.Text); };
             _recongizer.StartRecognitionAsync();
         }

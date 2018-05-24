@@ -17,7 +17,10 @@ namespace GoogleSpeechApi.Recognizer
         private bool _writeMore = true;
         private readonly object _writeLock = new object();
         private readonly IVariableProvider _variableProvider;
-        private bool isRecording = false;
+        private bool wasActivated;
+        private Stopwatch timer = new Stopwatch();
+
+        private const int threshold = 50;
 
         private SpeechClient.StreamingRecognizeStream GetCurrentStream => streams.Last();
 
@@ -59,6 +62,9 @@ namespace GoogleSpeechApi.Recognizer
         {
             try
             {
+                _writeMore = true;
+                timer = new Stopwatch();
+                timer.Start();
                 if (WaveIn.DeviceCount < 1)
                 {
                     throw new ApplicationException("No microphone!");
@@ -88,6 +94,8 @@ namespace GoogleSpeechApi.Recognizer
                             {
                                 var transcript = streamingRecognitionResult.Alternatives[0].Transcript;
                                 OnSpeechRecognized?.Invoke(this, new SpeechRecognizerEventArgs(transcript));
+                                if (timer.Elapsed.TotalSeconds >= threshold)
+                                    Restart();
                             }
                         }
                     }
@@ -112,12 +120,13 @@ namespace GoogleSpeechApi.Recognizer
 
         private void ActivateMicrophone()
         {
-            if (!isRecording)
+            if (!wasActivated)
             {
                 _waveInEvent.DataAvailable += WriteData;
-                _waveInEvent.StartRecording();
-                isRecording = true;
+                wasActivated = true;
             }
+            _waveInEvent.StartRecording();
+
         }
 
         private void WriteData(object sender, WaveInEventArgs args)
@@ -148,7 +157,7 @@ namespace GoogleSpeechApi.Recognizer
         {
             StreamingMicRecognizeAsync().ConfigureAwait(false);
             //            StreamingMicRecognizeAsync(100);
-            OnSpeechRecognized += (o, a) => { Debug.WriteLine(a.Text); };
+            //OnSpeechRecognized += (o, a) => { Debug.WriteLine(a.Text); };
         }
 
         public void StopRecognition()
@@ -169,6 +178,13 @@ namespace GoogleSpeechApi.Recognizer
         public async Task StartRecognition()
         {
             await StreamingMicRecognizeAsync();
+        }
+
+        private void Restart()
+        {
+            StopRecognition();
+            timer.Stop();
+            StartRecognitionAsync();
         }
     }
 }
